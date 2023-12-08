@@ -50,3 +50,22 @@ func GetAllComments() ([]models.Comment, error) {
 
 	return comments, err
 }
+
+func GetCommentById(id int) (*models.Comment, error) {
+	db, err := helpers.OpenDB()
+	if err != nil {
+
+		return nil, err
+	}
+	row := db.QueryRow("SELECT * FROM comments WHERE id=?", id)
+	helpers.CloseDB(db)
+
+	var comment models.Comment
+	err = row.Scan(&comment.ID, &comment.MusicID, &comment.UserID, &comment.Content, &comment.Rating)
+
+	if err != nil {
+
+		return nil, err // Autres erreurs lors du scan
+	}
+	return &comment, err
+}

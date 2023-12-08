@@ -4,8 +4,11 @@ import (
 	"Projet_Middleware/internal/models/comment"
 	repository "Projet_Middleware/internal/repositories/comment"
 
+	"database/sql"
+	"errors"
+	"net/http"
+
 	"github.com/sirupsen/logrus"
-	//"log"
 )
 
 func CreateComment(comment models.Comment) error {
@@ -31,4 +34,23 @@ func GetAllComments() ([]models.Comment, error) {
 	}
 
 	return comments, nil
+}
+
+func GetCommentById(id int) (*models.Comment, error) {
+	comment, err := repository.GetCommentById(id)
+	if err != nil {
+		if errors.As(err, &sql.ErrNoRows) {
+			return nil, &models.CustomError{
+				Message: "comment not found",
+				Code:    http.StatusNotFound,
+			}
+		}
+		logrus.Errorf("error retrieving comments : %s", err.Error())
+		return nil, &models.CustomError{
+			Message: "Something went wrong",
+			Code:    500,
+		}
+	}
+
+	return comment, err
 }
