@@ -16,3 +16,19 @@ func CreateComment(comment models.Comment) error {
 	}
 	return nil
 }
+
+func GetAllComments() ([]models.Comment, error) {
+	var err error
+	// calling repository
+	comments, err := repository.GetAllComments()
+	// managing errors
+	if err != nil {
+		logrus.Errorf("error retrieving collections : %s", err.Error())
+		return nil, &models.CustomError{
+			Message: "Something went wrong",
+			Code:    500,
+		}
+	}
+
+	return comments, nil
+}

@@ -24,3 +24,29 @@ func CreateComment(comment models.Comment) error {
 
 	return nil
 }
+
+func GetAllComments() ([]models.Comment, error) {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		return nil, err
+	}
+	rows, err := db.Query("SELECT * FROM comments")
+	helpers.CloseDB(db)
+	if err != nil {
+		return nil, err
+	}
+
+	comments := []models.Comment{}
+	for rows.Next() {
+		var data models.Comment
+		err = rows.Scan(&data.ID, &data.MusicID, &data.UserID, &data.Content, &data.Rating)
+		if err != nil {
+			return nil, err
+		}
+		comments = append(comments, data)
+	}
+
+	_ = rows.Close()
+
+	return comments, err
+}
