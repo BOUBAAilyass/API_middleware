@@ -3,7 +3,6 @@ package comments
 import (
 	"Projet_Middleware/internal/helpers/comment"
 	"Projet_Middleware/internal/models/comment"
-	"fmt"
 
 	"github.com/sirupsen/logrus"
 )
