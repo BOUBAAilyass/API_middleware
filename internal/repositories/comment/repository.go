@@ -69,3 +69,21 @@ func GetCommentById(id int) (*models.Comment, error) {
 	}
 	return &comment, err
 }
+
+func UpdateComment(comment *models.Comment) error {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		logrus.Errorf("Erreur lors de l'ouverture de la base de données : %s", err.Error())
+		return err
+	}
+	defer helpers.CloseDB(db)
+
+	_, err = db.Exec("UPDATE comments SET music_id=?, user_id=?, content=?, rating=? WHERE id=?",
+		comment.MusicID, comment.UserID, comment.Content, comment.Rating, comment.ID)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la mise à jour du commentaire dans la base de données : %s", err.Error())
+		return err
+	}
+
+	return nil
+}

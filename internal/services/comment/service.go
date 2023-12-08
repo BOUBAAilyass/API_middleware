@@ -54,3 +54,25 @@ func GetCommentById(id int) (*models.Comment, error) {
 
 	return comment, err
 }
+
+func UpdateComment(commentID int, updatedComment models.Comment) error {
+	comment, err := repository.GetCommentById(commentID)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la récupération du commentaire : %s", err.Error())
+		return err
+	}
+
+	// Mettre à jour les champs nécessaires du commentaire récupéré avec les données du commentaire mis à jour
+	comment.MusicID = updatedComment.MusicID
+	comment.UserID = updatedComment.UserID
+	comment.Content = updatedComment.Content
+	comment.Rating = updatedComment.Rating
+
+	err = repository.UpdateComment(comment)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la mise à jour du commentaire en base de données : %s", err.Error())
+		return err
+	}
+
+	return nil
+}
