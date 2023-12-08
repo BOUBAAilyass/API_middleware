@@ -76,3 +76,13 @@ func UpdateComment(commentID int, updatedComment models.Comment) error {
 
 	return nil
 }
+
+func DeleteComment(commentID int) error {
+	err := repository.DeleteComment(commentID)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la suppression du commentaire : %s", err.Error())
+		return err
+	}
+
+	return nil
+}

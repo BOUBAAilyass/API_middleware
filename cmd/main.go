@@ -18,6 +18,7 @@ func main() {
 	router.Get("/comments", comments.GetComments)
 	router.Get("/comments/{id}", comments.GetComment)
 	router.Put("/comments/{id}", comments.UpdateComment)
+	router.Delete("/comments/{id}", comments.DeleteComment)
 
 	logrus.Info("[INFO] Web server started. Now listening on *:8084")
 	logrus.Fatalln(http.ListenAndServe(":8084", router))

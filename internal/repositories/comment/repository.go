@@ -87,3 +87,20 @@ func UpdateComment(comment *models.Comment) error {
 
 	return nil
 }
+
+func DeleteComment(commentID int) error {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		logrus.Errorf("Erreur lors de l'ouverture de la base de données : %s", err.Error())
+		return err
+	}
+	defer helpers.CloseDB(db)
+
+	_, err = db.Exec("DELETE FROM comments WHERE id=?", commentID)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la suppression du commentaire dans la base de données : %s", err.Error())
+		return err
+	}
+
+	return nil
+}
