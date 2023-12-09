@@ -20,12 +20,6 @@ func InsertComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err != nil {
-		logrus.Errorf("Erreur lors de la génération de l'identifiant UUID : %s", err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
 	err = comments.CreateComment(newComment)
 	if err != nil {
 		logrus.Errorf("Erreur lors de la création du commentaire : %s", err.Error())

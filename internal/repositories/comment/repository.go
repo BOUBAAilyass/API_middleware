@@ -1,7 +1,7 @@
 package comments
 
 import (
-	"Projet_Middleware/internal/helpers/comment"
+	"Projet_Middleware/internal/helpers"
 	"Projet_Middleware/internal/models/comment"
 
 	"github.com/sirupsen/logrus"
