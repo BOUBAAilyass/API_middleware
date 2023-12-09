@@ -15,3 +15,13 @@ func CreateUsers(user models.User) error {
 	}
 	return nil
 }
+
+func GetAllUsers() ([]models.User, error) {
+	users, err := repository.GetAllUsers()
+	if err != nil {
+		logrus.Errorf("Erreur lors de la récupération des utilisateurs : %s", err.Error())
+		return nil, err
+	}
+	return users, nil
+
+}

@@ -24,3 +24,28 @@ func CreateUser(user models.User) error {
 
 	return nil
 }
+
+func GetAllUsers() ([]models.User, error) {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		return nil, err
+	}
+	rows, err := db.Query("SELECT * FROM users")
+	helpers.CloseDB(db)
+	if err != nil {
+		return nil, err
+	}
+
+	var users []models.User
+	for rows.Next() {
+		var user models.User
+		err = rows.Scan(&user.UserID, &user.UserName, &user.Password, &user.Email)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+	_ = rows.Close()
+
+	return users, nil
+}
