@@ -33,3 +33,12 @@ func GetUserByID(id int) (*models.User, error) {
 	}
 	return user, nil
 }
+
+func UpdateUser(id int, user *models.User) error {
+	err := repository.UpdateUser(id, user)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la mise à jour de l'utilisateur : %s", err.Error())
+		return err
+	}
+	return nil
+}

@@ -65,3 +65,17 @@ func GetUserByID(id int) (*models.User, error) {
 	}
 	return &user, nil
 }
+
+func UpdateUser(id int, user *models.User) error {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		return err
+	}
+	_, err = db.Exec("UPDATE users SET username=?, password=?, email=? WHERE id=?",
+		user.UserName, user.Password, user.Email, id)
+	helpers.CloseDB(db)
+	if err != nil {
+		return err
+	}
+	return nil
+}
