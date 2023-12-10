@@ -49,3 +49,19 @@ func GetAllUsers() ([]models.User, error) {
 
 	return users, nil
 }
+
+func GetUserByID(id int) (*models.User, error) {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		return nil, err
+	}
+	row := db.QueryRow("SELECT * FROM users WHERE id=?", id)
+	helpers.CloseDB(db)
+
+	var user models.User
+	err = row.Scan(&user.UserID, &user.UserName, &user.Password, &user.Email)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}

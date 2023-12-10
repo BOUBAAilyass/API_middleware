@@ -25,3 +25,11 @@ func GetAllUsers() ([]models.User, error) {
 	return users, nil
 
 }
+func GetUserByID(id int) (*models.User, error) {
+	user, err := repository.GetUserByID(id)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la récupération de l'utilisateur : %s", err.Error())
+		return nil, err
+	}
+	return user, nil
+}
