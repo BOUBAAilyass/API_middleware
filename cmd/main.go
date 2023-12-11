@@ -27,6 +27,7 @@ func main() {
 	router.Get("/users", users.GetAllUsers)
 	router.Get("/users/{id}", users.GetUserByID)
 	router.Put("/users/{id}", users.UpdateUser)
+	router.Delete("/users/{id}", users.DeleteUser)
 
 	logrus.Info("[INFO] Web server started. Now listening on *:8084")
 	logrus.Fatalln(http.ListenAndServe(":8084", router))
@@ -69,7 +70,7 @@ func init() {
             user_id INTEGER NOT NULL,
             content TEXT NOT NULL,
 			rating REAL CHECK (rating BETWEEN 0 AND 5),
-			FOREIGN KEY (content) REFERENCES users(username)
+			FOREIGN KEY (user_id) REFERENCES users(id)
 			
             
         );`,

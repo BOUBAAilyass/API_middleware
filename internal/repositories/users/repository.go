@@ -79,3 +79,16 @@ func UpdateUser(id int, user *models.User) error {
 	}
 	return nil
 }
+
+func DeleteUser(id int) error {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		return err
+	}
+	_, err = db.Exec("DELETE FROM users WHERE id=?", id)
+	helpers.CloseDB(db)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -15,6 +15,10 @@ import (
 func GetComment(w http.ResponseWriter, r *http.Request) {
 
 	commentId, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		http.Error(w, "Invalid comment ID", http.StatusBadRequest)
+		return
+	}
 
 	comment, err := comments.GetCommentById(commentId)
 	if err != nil {

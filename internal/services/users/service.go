@@ -42,3 +42,12 @@ func UpdateUser(id int, user *models.User) error {
 	}
 	return nil
 }
+
+func DeleteUser(id int) error {
+	err := repository.DeleteUser(id)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la suppression de l'utilisateur : %s", err.Error())
+		return err
+	}
+	return nil
+}
