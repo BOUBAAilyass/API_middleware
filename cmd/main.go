@@ -4,6 +4,7 @@ import (
 	"Projet_Middleware/internal/comments"
 	"Projet_Middleware/internal/helpers"
 
+	"Projet_Middleware/internal/songs"
 	"Projet_Middleware/internal/users"
 	"net/http"
 
@@ -28,6 +29,9 @@ func main() {
 	router.Get("/users/{id}", users.GetUserByID)
 	router.Put("/users/{id}", users.UpdateUser)
 	router.Delete("/users/{id}", users.DeleteUser)
+
+	// songs------------------------------------------------------------------------------------------------------------------
+	router.Post("/songs", songs.InsertSong)
 
 	logrus.Info("[INFO] Web server started. Now listening on *:8084")
 	logrus.Fatalln(http.ListenAndServe(":8084", router))
@@ -79,6 +83,25 @@ func init() {
 	for _, comment_scheme := range comment_schemes {
 		if _, err := db.Exec(comment_scheme); err != nil {
 			logrus.Fatalln("Could not generate comments table ! Error was : " + err.Error())
+		}
+	}
+
+	// Songs------------------------------------------------------------------------------------------------------------------
+
+	song_schemes := []string{
+		`CREATE TABLE IF NOT EXISTS songs (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			title TEXT NOT NULL,
+			artist TEXT NOT NULL,
+			album TEXT NOT NULL,
+			year INTEGER NOT NULL,
+			duration INTEGER NOT NULL
+		);`,
+	}
+
+	for _, song_scheme := range song_schemes {
+		if _, err := db.Exec(song_scheme); err != nil {
+			logrus.Fatalln("Could not generate songs table ! Error was : " + err.Error())
 		}
 	}
 
